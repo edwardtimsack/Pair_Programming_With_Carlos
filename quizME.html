@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Quiz-Me</title>
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800&display=swap');
+      body {
+        background-color: #025464;
+        font-family: "Poppins";
+      }
+      header {
+        display: flex;
+        font-family: Verdana, Geneva, Tahoma, sans-serif;
+        background-color: black;
+        color: white;
+        justify-content: space-between;
+        padding: 5px;
+        margin: 0px;
+      }
+
+      #app-title {
+        font-family: "Times New Roman", Times, serif;
+        font-size: 24px;
+        padding: 5px;
+      }
+
+      #app-score {
+        font-family: "Times New Roman", Times, serif;
+        font-size: 18px;
+        padding: 5px;
+      }
+
+      .app__question-container {
+        width: 60%;
+        border: 2px solid #ddd;
+        border-radius: 8px;
+        margin: 40px auto;
+        padding: 15px;
+        background-color: #537188;
+      }
+
+      .question {
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 16px;
+      }
+
+      .question__options-container {
+        padding: 5px;
+      }
+
+      .question__options-item {
+        font-size: 18px;
+        padding: 0px;
+      }
+
+      .question__options-item input[type="radio"] {
+        padding: 0px;
+        border: 0px;
+        width: 50px;
+        height: 30px;
+        vertical-align: middle;
+      }
+      .app-btns {
+        display: flex;
+        justify-content: space-between;
+        padding: 15px;
+      }
+      .app-btns button {
+        width: 100px;
+        padding: 10px;
+        cursor: pointer;
+        border-radius: 8px;
+        font-size: 16px;
+      }
+
+      #previous-btn,
+      #next-btn {
+        background-color: #025464;
+        border: 1px solid inherit;
+        color: #fff;
+      }
+
+      #previous-btn:hover,
+      #next-btn:hover {
+        background-color: black;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <h1 id="app-title">QuizMe</h1>
+        <h3 id="app-score">Score: 0%</h3>
+      </header>
+
+      <div class="app__question-container">
+        <div class="question">
+          <h3 class="question-title"></h3>
+          <div class="question__options-container">
+            <!-- <label class="question__options-item" for="question-option"
+              ><input name="question-option" value="href" type="radio" />a.
+              href</label
+            ><br />
+            <label class="question__options-item" for="question-option"
+              ><input name="question-option" value="src" type="radio" />b.
+              src</label
+            ><br />
+            <label class="question__options-item" for="question-option"
+              ><input name="question-option" value="class" type="radio" />c.
+              class</label
+            ><br />
+            <label class="question__options-item" for="question-option"
+              ><input name="question-option" value="style" type="radio" />d.
+              style</label
+            > -->
+          </div>
+        </div>
+
+        <div class="app-btns">
+          <button id="previous-btn" onclick="previousQuestion()">Previous</button>
+          <button id="next-btn" onclick="nextQuestion()">Next</button>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      // html selected elements
+      let questionTitleElement = document.querySelector(".question-title");
+      let optionsContainerElement = document.querySelector(
+        ".question__options-container"
+      );
+
+      let questions = [
+        {
+          text: "Which attribute is used to specify the location of an external Css?",
+          options: ["href", "src", "class", "style"],
+          answer: "href",
+        },
+        {
+          text: "Which tag is used to define an HTML link?",
+          options: ["<link>", "<a>", "<href>", "<url>"],
+          answer: "<a>",
+        },
+        {
+          text: "What does HTML stand for?",
+          options: [
+            "Hyper Text Markup Language",
+            "High Technical Markup Language",
+            "Home Tool Markup",
+            "Hyperlink And Text Markup Language",
+          ],
+          answer: "Hyper Text Markup Language",
+        },
+      ];
+
+      let questionCount = 0;
+
+      let questionDetail = questions[questionCount];
+
+      //   console.log({questionDetail})
+
+    //   displayQuestion function
+      function displayQuestion() {
+        questionTitleElement.textContent =
+          "Question " + (questionCount + 1) + ": " + questionDetail.text;
+
+        for (let i = 0; i < questionDetail.options.length; i++) {
+          const option = questionDetail.options[i];
+          createOption(option);
+        }
+      }
+
+    //   nextQuestion function
+      function nextQuestion() {
+        questionCount += 1;
+
+        // clear options
+        optionsContainerElement.innerHTML = "";
+        questionTitleElement.innerHTML = "";
+        if (questions.length > questionCount) {
+          questionDetail = questions[questionCount];
+          displayQuestion();
+        }
+        
+        return;
+      }
+
+    //   previousQuestion function 
+      function previousQuestion() {
+        questionCount -= 1;
+
+        // clear options
+        optionsContainerElement.innerHTML = "";
+        questionTitleElement.innerHTML = "";
+        if (questions.length > questionCount) {
+          questionDetail = questions[questionCount];
+          displayQuestion();
+        }
+        
+        return;
+      }
+
+
+      function createOption(option) {
+        const labelEl = document.createElement("label");
+        const inputEl = document.createElement("input");
+
+        labelEl.classList.add("question__options-item");
+        inputEl.name = "question-option";
+        inputEl.value = option;
+        inputEl.type = "radio";
+        labelEl.appendChild(inputEl);
+        labelEl.insertAdjacentText("beforeend", option);
+        labelEl.insertAdjacentElement(
+          "beforeend",
+          document.createElement("br")
+        );
+
+        optionsContainerElement.appendChild(labelEl);
+      }
+
+      displayQuestion();
+    </script>
+  </body>
+</html>
